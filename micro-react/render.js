@@ -9,10 +9,25 @@ function render(element, container) {
   Object.keys(element.props)
     .filter((key) => key !== "children")
     .forEach((key) => (dom[key] = element.props[key]));
-  // 递归渲染孩子
-  element.props.children.forEach((child) => render(child, dom));
   // 追加到父节点
   container.append(dom);
+}
+
+let nextUnionOfWork = null;
+
+function workLoop(deadLine) {
+    let shouldYeild = false;
+    while( nextUnionOfWork && !shouldYeild ) {
+        nextUnionOfWork = performUntionOfWork(nextUnionOfWork);
+        shouldYeild = deadLine.timeRemaining() < 1;
+    }
+    requestIdleCallback(workLoop);
+}
+
+requestIdleCallback(workLoop);
+
+function performUntionOfWork(work) {
+
 }
 
 export default render;

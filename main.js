@@ -1,18 +1,25 @@
 import { createElement, render } from "./micro-react";
 
-const ele = createElement(
-  "h1",
-  {
-    id: "title",
-    class: "hello",
-    style: "background: red",
-  },
-  "helloworld",
-  createElement("h2", { style:' background: blue'},'hhh')
-);
+const handleChange = (e) => {
+  renderer(e.target.value);
+};
 
-const container = document.querySelector("#app");
+const container = document.querySelector('#app');
 
-render(ele, container);
+const renderer = (value) => {
+  const element = createElement(
+    'div',
+    null,
+    createElement('input', {
+      value: value,
+      oninput: (e) => {
+        handleChange(e);
+      },
+    }),
+    createElement('h2', null, value)
+  );
+  console.log(element)
+  render(element, container);
+};
 
-console.log(ele);
+renderer('Hello');
